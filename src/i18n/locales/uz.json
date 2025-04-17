@@ -12,6 +12,8 @@
     "dashboard": "Boshqaruv paneli",
     "bookCatalog": "Kitoblar katalogi",
     "myBooks": "Mening kitoblarim",
+    "about" : "Biz haqimizda",
+    "libraries" : "Kutubxonalar",
     "addBook": "Kitob qo'shish",
     "userManagement": "Foydalanuvchilar boshqaruvi",
     "profile": "Profil",
@@ -155,6 +157,7 @@
     "description": "Tavsif",
     "contact": "Bog'lanish",
     "books": "Kitoblar",
+    "libraries" : "Kutubxonalar",
     "details": "Kutubxona tafsilotlari"
   },
   "book": {
