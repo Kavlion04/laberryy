@@ -1,125 +1,17 @@
-
 {
-  "navbar": {
-    "search": "Kitoblar qidirish...",
-    "login": "Kirish",
-    "register": "Ro'yxatdan o'tish",
-    "profile": "Profil",
-    "logout": "Chiqish",
-    "settings": "Sozlamalar"
-  },
-  "sidebar": {
-    "dashboard": "Boshqaruv paneli",
-    "bookCatalog": "Kitoblar katalogi",
-    "myBooks": "Mening kitoblarim",
-    "addBook": "Kitob qo'shish",
-    "userManagement": "Foydalanuvchilar boshqaruvi",
-    "profile": "Profil",
-    "settings": "Sozlamalar",
-    "currentRole": "Joriy rol",
-    "version": "BookMaster Kutubxona Tizimi v1.0.0"
-  },
-  "dashboard": {
-    "welcome": "BookMaster tizimiga xush kelibsiz",
-    "admin": "Admin panel",
-    "addNewBook": "Yangi kitob qo'shish",
-    "stats": {
-      "totalBooks": "Jami kitoblar",
-      "booksInCollection": "Kutubxonadagi kitoblar",
-      "availableBooks": "Mavjud kitoblar",
-      "booksForBorrow": "Ijaraga berish uchun mavjud kitoblar",
-      "totalCopies": "Jami nusxalar",
-      "totalInventory": "Inventardagi kitob nusxalari",
-      "registeredUsers": "Ro'yxatdan o'tgan foydalanuvchilar",
-      "activeUsers": "Faol foydalanuvchilar",
-      "borrowedBooks": "Ijaraga olingan kitoblar",
-      "currentlyBorrowed": "Hozirda ijaraga olingan kitoblar"
-    },
-    "tabs": {
-      "recent": "Yangi kitoblar",
-      "popular": "Mashhur kitoblar",
-      "recommended": "Tavsiya etilgan",
-      "viewAll": "Barcha kitoblarni ko'rish"
-    }
-  },
-  "auth": {
-    "login": {
-      "title": "Tizimga kirish",
-      "phone": "Telefon raqami",
-      "password": "Parol",
-      "submit": "Kirish",
-      "noAccount": "Hisobingiz yo'qmi?",
-      "register": "Ro'yxatdan o'tish",
-      "success": "Tizimga muvaffaqiyatli kirdingiz",
-      "error": "Tizimga kirishda xatolik yuz berdi"
-    },
-    "register": {
-      "title": "Ro'yxatdan o'tish",
-      "userInfo": "Foydalanuvchi ma'lumotlari",
-      "libraryInfo": "Kutubxona ma'lumotlari",
-      "name": "To'liq ism",
-      "phone": "Telefon raqami",
-      "password": "Parol",
-      "address": "Manzil",
-      "socialMedia": "Ijtimoiy tarmoqlar (Ixtiyoriy)",
-      "canRentBooks": "Kitoblarni ijaraga berish",
-      "locationInfo": "Joylashuv ma'lumotlari",
-      "selectOnMap": "Joylashuvni xaritada tanlang",
-      "submit": "Ro'yxatdan o'tish",
-      "haveAccount": "Hisobingiz bormi?",
-      "login": "Tizimga kirish",
-      "success": "Ro'yxatdan o'tish muvaffaqiyatli yakunlandi",
-      "error": "Ro'yxatdan o'tish muvaffaqiyatsiz yakunlandi"
-    },
-    "logout": {
-      "success": "Tizimdan muvaffaqiyatli chiqib ketdingiz",
-      "error": "Tizimdan chiqishda xatolik yuz berdi"
-    }
-  },
-  "profile": {
-    "title": "Profil",
-    "subtitle": "Profil ma'lumotlarini ko'rish va tahrirlash",
-    "personalInfo": "Shaxsiy ma'lumotlar",
-    "name": "To'liq ism",
-    "phone": "Telefon raqami",
-    "address": "Manzil",
-    "socialMedia": "Ijtimoiy tarmoqlar",
-    "mapLocation": "Kutubxona joylashuvi",
-    "editProfile": "Profilni tahrirlash",
-    "saveChanges": "Saqlash",
-    "cancel": "Bekor qilish",
-    "updateSuccess": "Profil muvaffaqiyatli yangilandi",
-    "updateError": "Profilni yangilashda xatolik yuz berdi"
-  },
-  "settings": {
-    "title": "Sozlamalar",
-    "subtitle": "Hisobingiz va dastur sozlamalarini boshqaring",
-    "appearance": "Ko'rinish",
-    "theme": "Mavzu",
-    "light": "Yorqin",
-    "dark": "Qorong'i",
-    "textColor": "Matn rangi",
-    "default": "Standart",
-    "blue": "Ko'k",
-    "green": "Yashil",
-    "purple": "Siyoh",
-    "red": "Qizil",
-    "language": "Til",
-    "english": "English",
-    "uzbek": "O'zbek",
-    "russian": "Русский"
-  },
   "common": {
-    "loading": "Yuklanmoqda...",
-    "error": "Xatolik yuz berdi",
-    "retry": "Qayta urinish",
-    "save": "Saqlash",
+    "loading": "Yuklanmoqda",
     "cancel": "Bekor qilish",
     "confirm": "Tasdiqlash",
-    "back": "Orqaga",
-    "notFound": "Topilmadi"
+    "save": "Saqlash",
+    "delete": "O'chirish",
+    "edit": "Tahrirlash",
+    "view": "Ko'rish",
+    "close": "Yopish",
+    "search": "Qidirish",
+    "noResults": "Natija topilmadi",
+    "error": "Xatolik yuz berdi"
   },
-  
   "home": {
     "title": "Creative Bookworm - Zamonaviy kutubxona tizimi",
     "description": "Kitobxonlar va kutubxonalar o'rtasidagi aloqani osonlashtirish va kitob o'qish madaniyatini rivojlantirish uchun yaratilgan platforma",
@@ -149,7 +41,27 @@
       }
     }
   },
-  
+  "navbar": {
+    "search": "Kitob yoki kutubxona qidirish",
+    "login": "Kirish",
+    "register": "Ro'yxatdan o'tish",
+    "profile": "Profil",
+    "settings": "Sozlamalar",
+    "logout": "Chiqish"
+  },
+  "sidebar": {
+    "home": "Bosh sahifa",
+    "libraries": "Kutubxonalar",
+    "myBooks": "Mening kitoblarim",
+    "about": "Biz haqimizda",
+    "help": "Yordam",
+    "dashboard": "Boshqaruv paneli",
+    "books": "Kitoblar",
+    "users": "Foydalanuvchilar",
+    "settings": "Sozlamalar",
+    "currentRole": "Joriy rol",
+    "version": "Versiya 1.0.0"
+  },
   "auth": {
     "login": {
       "title": "Tizimga kirish",

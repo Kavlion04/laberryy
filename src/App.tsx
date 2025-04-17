@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,7 +8,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 
 import MainLayout from "./components/layout/MainLayout";
-import Index from "./pages/Index";
+import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
 import BookCatalog from "./pages/BookCatalog";
 import BookDetails from "./pages/BookDetails";
@@ -21,6 +20,9 @@ import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import AboutPage from "./pages/AboutPage";
+import LibrariesPage from "./pages/LibrariesPage";
+import LibraryDetailPage from "./pages/LibraryDetailPage";
 
 // Import i18n config
 import "./i18n";
@@ -37,23 +39,112 @@ const App = () => (
             <Sonner />
             <BrowserRouter>
               <Routes>
-                <Route path="/" element={<MainLayout><Index /></MainLayout>} />
-                <Route path="/dashboard" element={<MainLayout><Dashboard /></MainLayout>} />
-                <Route path="/books" element={<MainLayout><BookCatalog /></MainLayout>} />
-                <Route path="/books/:id" element={<MainLayout><BookDetails /></MainLayout>} />
-                <Route path="/add-book" element={<MainLayout><AddBook /></MainLayout>} />
-                <Route path="/edit-book/:id" element={<MainLayout><EditBook /></MainLayout>} />
-                <Route path="/my-books" element={<MainLayout><MyBooks /></MainLayout>} />
-                <Route path="/users" element={<MainLayout><UserManagement /></MainLayout>} />
-                <Route 
-                  path="/profile" 
+                <Route
+                  path="/"
+                  element={
+                    <MainLayout>
+                      <HomePage />
+                    </MainLayout>
+                  }
+                />
+                <Route
+                  path="/dashboard"
+                  element={
+                    <MainLayout>
+                      <Dashboard />
+                    </MainLayout>
+                  }
+                />
+                <Route
+                  path="/books"
+                  element={
+                    <MainLayout>
+                      <BookCatalog />
+                    </MainLayout>
+                  }
+                />
+                <Route
+                  path="/books/:id"
+                  element={
+                    <MainLayout>
+                      <BookDetails />
+                    </MainLayout>
+                  }
+                />
+                <Route
+                  path="/add-book"
+                  element={
+                    <MainLayout>
+                      <AddBook />
+                    </MainLayout>
+                  }
+                />
+                <Route
+                  path="/edit-book/:id"
+                  element={
+                    <MainLayout>
+                      <EditBook />
+                    </MainLayout>
+                  }
+                />
+                <Route
+                  path="/my-books"
+                  element={
+                    <MainLayout>
+                      <MyBooks />
+                    </MainLayout>
+                  }
+                />
+                <Route
+                  path="/users"
+                  element={
+                    <MainLayout>
+                      <UserManagement />
+                    </MainLayout>
+                  }
+                />
+                <Route
+                  path="/about"
+                  element={
+                    <MainLayout>
+                      <AboutPage />
+                    </MainLayout>
+                  }
+                />
+                <Route
+                  path="/libraries"
+                  element={
+                    <MainLayout>
+                      <LibrariesPage />
+                    </MainLayout>
+                  }
+                />
+                <Route
+                  path="/profile"
                   element={
                     <ProtectedRoute>
-                      <MainLayout><Profile /></MainLayout>
+                      <MainLayout>
+                        <Profile />
+                      </MainLayout>
                     </ProtectedRoute>
-                  } 
+                  }
                 />
-                <Route path="/settings" element={<MainLayout><Settings /></MainLayout>} />
+                <Route
+                  path="/settings"
+                  element={
+                    <MainLayout>
+                      <Settings />
+                    </MainLayout>
+                  }
+                />
+                <Route
+                  path="/libraries/:id"
+                  element={
+                    <MainLayout>
+                      <LibraryDetailPage />
+                    </MainLayout>
+                  }
+                />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>

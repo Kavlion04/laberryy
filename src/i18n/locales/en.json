@@ -1,7 +1,6 @@
-
 {
   "navbar": {
-    "search": "Search for books...",
+    "search": "Search books...",
     "login": "Login",
     "register": "Register",
     "profile": "Profile",
@@ -17,7 +16,9 @@
     "profile": "Profile",
     "settings": "Settings",
     "currentRole": "Current Role",
-    "version": "BookMaster Library System v1.0.0"
+    "version": "Version 1.0.0",
+    "about": "About Us",
+    "libraries": "Libraries"
   },
   "dashboard": {
     "welcome": "Welcome back to BookMaster",
@@ -119,12 +120,22 @@
   },
   "common": {
     "loading": "Loading...",
-    "error": "An error occurred",
-    "retry": "Retry",
+    "error": "Error",
+    "success": "Success",
     "save": "Save",
     "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "actions": "Actions",
     "confirm": "Confirm",
     "back": "Back",
-    "notFound": "Not Found"
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "close": "Close"
   }
 }

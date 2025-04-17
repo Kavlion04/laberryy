@@ -1,132 +1,233 @@
-
-import { useEffect, useRef, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
+import { useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-
-const MAPBOX_TOKEN = 'pk.eyJ1IjoibGlicmFyeWFwcCIsImEiOiJjbHZtaWRjMDQwazJ2MnZuemt5MDNyNGNyIn0.JdLagzLPB-xwLnm_9WQ60Q';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface LocationMapProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (latitude: number, longitude: number) => void;
-  defaultLatitude?: number;
-  defaultLongitude?: number;
+  onLocationSelect: (lat: number, lng: number, address: string) => void;
+  defaultLocation?: { lat: number; lng: number };
+}
+
+declare global {
+  interface Window {
+    google: typeof google;
+  }
 }
 
 const LocationMap = ({
   isOpen,
   onClose,
-  onConfirm,
-  defaultLatitude,
-  defaultLongitude,
+  onLocationSelect,
+  defaultLocation,
 }: LocationMapProps) => {
   const { t } = useTranslation();
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const marker = useRef<mapboxgl.Marker | null>(null);
-  const [coords, setCoords] = useState({
-    lat: defaultLatitude || 41.2995,
-    lng: defaultLongitude || 69.2401,
-  });
+  const mapRef = useRef<HTMLDivElement>(null);
+  const initializedRef = useRef(false);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [marker, setMarker] = useState<google.maps.Marker | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<{
+    lat: number;
+    lng: number;
+    address: string;
+  } | null>(null);
 
-  mapboxgl.accessToken = MAPBOX_TOKEN;
+  const defaultCenter = defaultLocation || { lat: 41.2995, lng: 69.2401 };
 
   useEffect(() => {
-    if (!isOpen || !mapContainer.current) return;
+    if (!isOpen || !mapRef.current || initializedRef.current) return;
 
-    // Initialize map
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [coords.lng, coords.lat],
-      zoom: 12,
-    });
+    const loadGoogleMapsAPI = () => {
+      if (!window.google || !window.google.maps) {
+        const script = document.createElement("script");
+        const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+        script.async = true;
+        script.defer = true;
 
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+        script.onload = () => {
+          initializeMap();
+        };
 
-    if (defaultLatitude && defaultLongitude) {
-      marker.current = new mapboxgl.Marker({ draggable: true })
-        .setLngLat([defaultLongitude, defaultLatitude])
-        .addTo(map.current);
+        script.onerror = () => {
+          console.error("Google Maps API load failed");
+        };
 
-      marker.current.on('dragend', () => {
-        const position = marker.current?.getLngLat();
-        if (position) {
-          setCoords({ lat: position.lat, lng: position.lng });
-        }
-      });
-    }
-
-    map.current.on('click', (e) => {
-      const { lng, lat } = e.lngLat;
-      
-      if (marker.current) {
-        marker.current.remove();
+        document.head.appendChild(script);
+      } else {
+        initializeMap();
       }
-
-      marker.current = new mapboxgl.Marker({ draggable: true })
-        .setLngLat([lng, lat])
-        .addTo(map.current!);
-
-      setCoords({ lat, lng });
-
-      marker.current.on('dragend', () => {
-        const position = marker.current?.getLngLat();
-        if (position) {
-          setCoords({ lat: position.lat, lng: position.lng });
-        }
-      });
-    });
-
-    return () => {
-      map.current?.remove();
     };
-  }, [isOpen, defaultLatitude, defaultLongitude]);
+
+    const initializeMap = () => {
+      if (!mapRef.current) return;
+
+      const mapInstance = new window.google.maps.Map(mapRef.current, {
+        center: defaultCenter,
+        zoom: 13,
+        styles: [
+          {
+            featureType: "poi",
+            elementType: "labels",
+            stylers: [{ visibility: "off" }],
+          },
+        ],
+      });
+
+      const markerInstance = new window.google.maps.Marker({
+        map: mapInstance,
+        draggable: true,
+        position: defaultCenter,
+      });
+
+      const geocoder = new window.google.maps.Geocoder();
+
+      mapInstance.addListener("click", (e: google.maps.MapMouseEvent) => {
+        const latLng = e.latLng;
+        if (!latLng) return;
+
+        markerInstance.setPosition(latLng);
+        geocoder.geocode(
+          { location: { lat: latLng.lat(), lng: latLng.lng() } },
+          (results, status) => {
+            if (status === "OK" && results && results[0]) {
+              setSelectedLocation({
+                lat: latLng.lat(),
+                lng: latLng.lng(),
+                address: results[0].formatted_address,
+              });
+            }
+          }
+        );
+      });
+
+      markerInstance.addListener("dragend", () => {
+        const position = markerInstance.getPosition();
+        if (!position) return;
+
+        geocoder.geocode(
+          { location: { lat: position.lat(), lng: position.lng() } },
+          (results, status) => {
+            if (status === "OK" && results && results[0]) {
+              setSelectedLocation({
+                lat: position.lat(),
+                lng: position.lng(),
+                address: results[0].formatted_address,
+              });
+            }
+          }
+        );
+      });
+
+      // Wait until input is mounted
+      setTimeout(() => {
+        const input = document.getElementById("pac-input") as HTMLInputElement;
+        if (input) {
+          const searchBox = new window.google.maps.places.SearchBox(input);
+
+          mapInstance.addListener("bounds_changed", () => {
+            const bounds = mapInstance.getBounds();
+            if (bounds) searchBox.setBounds(bounds);
+          });
+
+          searchBox.addListener("places_changed", () => {
+            const places = searchBox.getPlaces();
+            if (!places || places.length === 0) return;
+
+            const place = places[0];
+            if (!place.geometry || !place.geometry.location) return;
+
+            mapInstance.setCenter(place.geometry.location);
+            markerInstance.setPosition(place.geometry.location);
+
+            setSelectedLocation({
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng(),
+              address: place.formatted_address || "",
+            });
+          });
+        }
+      }, 500);
+
+      setMap(mapInstance);
+      setMarker(markerInstance);
+      initializedRef.current = true;
+    };
+
+    loadGoogleMapsAPI();
+  }, [isOpen]);
 
   const handleConfirm = () => {
-    onConfirm(coords.lat, coords.lng);
-    onClose();
+    if (selectedLocation) {
+      onLocationSelect(
+        selectedLocation.lat,
+        selectedLocation.lng,
+        selectedLocation.address
+      );
+      onClose();
+    }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-hidden">
+      <DialogContent className="max-w-3xl h-[80vh]">
         <DialogHeader>
-          <DialogTitle>{t('map.title')}</DialogTitle>
-          <DialogDescription>{t('map.subtitle')}</DialogDescription>
+          <DialogTitle>{t("map.title")}</DialogTitle>
         </DialogHeader>
-        
-        <div ref={mapContainer} className="w-full h-[400px] rounded-md overflow-hidden" />
-        
-        <div className="grid grid-cols-2 gap-4 py-2">
-          <div>
-            <p className="text-sm font-medium mb-1">{t('map.latitude')}</p>
-            <p className="text-sm">{coords.lat.toFixed(6)}</p>
+
+        <div className="space-y-4">
+          <div className="relative">
+            <Input
+              id="pac-input"
+              type="text"
+              placeholder={t("map.searchPlaceholder")}
+              className="w-full pl-3 pr-10 py-2"
+            />
           </div>
-          <div>
-            <p className="text-sm font-medium mb-1">{t('map.longitude')}</p>
-            <p className="text-sm">{coords.lng.toFixed(6)}</p>
+
+          {/* MAP DIV - Height fixed to 400px */}
+          <div
+            ref={mapRef}
+            className="w-full rounded-lg"
+            style={{ height: "400px" }}
+          />
+
+          {selectedLocation && (
+            <div className="space-y-4">
+              <div>
+                <Label>{t("map.selectedLocation")}</Label>
+                <Input value={selectedLocation.address} readOnly />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label>{t("map.latitude")}</Label>
+                  <Input value={selectedLocation.lat.toFixed(6)} readOnly />
+                </div>
+                <div>
+                  <Label>{t("map.longitude")}</Label>
+                  <Input value={selectedLocation.lng.toFixed(6)} readOnly />
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="flex justify-end gap-4">
+            <Button variant="outline" onClick={onClose}>
+              {t("common.cancel")}
+            </Button>
+            <Button onClick={handleConfirm} disabled={!selectedLocation}>
+              {t("common.confirm")}
+            </Button>
           </div>
         </div>
-        
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
-            {t('map.cancel')}
-          </Button>
-          <Button onClick={handleConfirm}>
-            {t('map.confirm')}
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

@@ -3,16 +3,11 @@ import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { ButtonProps, buttonVariants } from "@/components/ui/button";
-import {
-  Pagination as PaginationRoot,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination-root";
 
-const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
+const PaginationRoot = ({
+  className,
+  ...props
+}: React.ComponentProps<"nav">) => (
   <nav
     role="navigation"
     aria-label="pagination"
@@ -20,7 +15,7 @@ const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
     {...props}
   />
 );
-Pagination.displayName = "Pagination";
+PaginationRoot.displayName = "PaginationRoot";
 
 const PaginationContent = React.forwardRef<
   HTMLUListElement,
@@ -45,7 +40,7 @@ PaginationItem.displayName = "PaginationItem";
 type PaginationLinkProps = {
   isActive?: boolean;
 } & Pick<ButtonProps, "size"> &
-  React.ComponentProps<"a">;
+  React.ComponentProps<"button">;
 
 const PaginationLink = ({
   className,
@@ -53,7 +48,7 @@ const PaginationLink = ({
   size = "icon",
   ...props
 }: PaginationLinkProps) => (
-  <a
+  <button
     aria-current={isActive ? "page" : undefined}
     className={cn(
       buttonVariants({
@@ -114,71 +109,12 @@ const PaginationEllipsis = ({
 );
 PaginationEllipsis.displayName = "PaginationEllipsis";
 
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-}
-
-export function Pagination({
-  currentPage,
-  totalPages,
-  onPageChange,
-}: PaginationProps) {
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      onPageChange(currentPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      onPageChange(currentPage + 1);
-    }
-  };
-
-  return (
-    <PaginationRoot>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious
-            onClick={handlePrevPage}
-            className={
-              currentPage === 1 ? "pointer-events-none opacity-50" : ""
-            }
-          />
-        </PaginationItem>
-
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <PaginationItem key={page}>
-            <PaginationLink
-              onClick={() => onPageChange(page)}
-              isActive={currentPage === page}
-            >
-              {page}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
-
-        <PaginationItem>
-          <PaginationNext
-            onClick={handleNextPage}
-            className={
-              currentPage === totalPages ? "pointer-events-none opacity-50" : ""
-            }
-          />
-        </PaginationItem>
-      </PaginationContent>
-    </PaginationRoot>
-  );
-}
-
 export {
-  Pagination,
+  PaginationRoot,
   PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
   PaginationLink,
-  PaginationNext,
+  PaginationItem,
   PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
 };
