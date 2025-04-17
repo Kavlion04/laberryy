@@ -22,6 +22,7 @@
   "dashboard": {
     "welcome": "BookMaster tizimiga xush kelibsiz",
     "admin": "Admin panel",
+    "dashboard":"Boshqaruv paneli",
     "addNewBook": "Yangi kitob qo'shish",
     "stats": {
       "totalBooks": "Jami kitoblar",
@@ -149,29 +150,6 @@
       }
     }
   },
-  
-  "auth": {
-    "login": {
-      "title": "Tizimga kirish",
-      "noAccount": "Hisobingiz yo'qmi?",
-      "register": "Ro'yxatdan o'ting",
-      "submit": "Kirish"
-    },
-    "register": {
-      "title": "Ro'yxatdan o'tish",
-      "haveAccount": "Hisobingiz bormi?",
-      "login": "Tizimga kiring",
-      "submit": "Ro'yxatdan o'tish",
-      "name": "Ism",
-      "phone": "Telefon raqam",
-      "password": "Parol",
-      "address": "Manzil",
-      "socialMedia": "Ijtimoiy tarmoq",
-      "canRentBooks": "Kitob ijarasi mavjud",
-      "userInfo": "Foydalanuvchi ma'lumotlari",
-      "libraryInfo": "Kutubxona ma'lumotlari"
-    }
-  },
   "library": {
     "viewOnMap": "Xaritada ko'rish",
     "description": "Tavsif",
@@ -210,7 +188,36 @@
       "community": {
         "title": "Hamjamiyat",
         "description": "Kutubxonalar va kitobxonlar o'rtasida faol hamjamiyat yaratish"
+      },
+      "search": {
+        "title": "Qidiruv tizimi",
+        "description": "Kitoblarni tezkor va qulay qidirish imkoniyati"
+      },
+      "availability": {
+        "title": "24/7 Xizmat",
+        "description": "Kutubxona xizmatlariga kunning istalgan vaqtida kirish imkoniyati"
+      },
+      "security": {
+        "title": "Xavfsizlik",
+        "description": "Ma'lumotlar va shaxsiy ma'lumotlarning xavfsizligini ta'minlash"
+      },
+      "innovation": {
+        "title": "Innovatsiya",
+        "description": "Zamonaviy texnologiyalarni joriy etish va tizimni doimiy takomillashtirish"
+      },
+      "education": {
+        "title": "Ta'lim",
+        "description": "Kitobxonlik madaniyatini rivojlantirish va bilim olishni qo'llab-quvvatlash"
+      },
+      "accessibilityt": {
+        "title": "Qulaylik",
+        "description": "Barcha foydalanuvchilar uchun qulay va tushunarli interfeys"
+      },
+      "integration": {
+        "title": "Integratsiya",
+        "description": "Boshqa ta'lim resurslari va kutubxonalar bilan hamkorlik"
       }
+      
     },
     "faq": {
       "title": "Ko'p so'raladigan savollar",
@@ -239,15 +246,15 @@
       },
       "phone": {
         "title": "Telefon",
-        "value": "+998 71 123 45 67"
+        "value": "+998 91 801 77 15"
       },
       "email": {
         "title": "Email",
-        "value": "info@creativebookworm.uz"
+        "value": "kavlion06@gmail.com"
       },
       "workingHours": {
         "title": "Ish vaqti",
-        "value": "Dushanba - Shanba: 09:00 - 18:00"
+        "value": "Dushanba - Juma: 09:00 - 18:00"
       }
     }
   }

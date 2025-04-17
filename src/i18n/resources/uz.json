@@ -111,7 +111,7 @@
     "description": "Creative Bookworm - bu zamonaviy kutubxona tizimi bo'lib, u kitobxonlar va kutubxonalar o'rtasidagi aloqani osonlashtirish va kitob o'qish madaniyatini rivojlantirish uchun yaratilgan.",
     "goals": {
       "title": "Loyiha maqsadlari",
-      "accessibility": {
+      "easyAccess": {
         "title": "Kitoblarga qulay kirish",
         "description": "Barcha kitobxonlar uchun kutubxona resurslariga qulay va tezkor kirish imkoniyatini ta'minlash"
       },
@@ -122,6 +122,34 @@
       "community": {
         "title": "Hamjamiyat",
         "description": "Kutubxonalar va kitobxonlar o'rtasida faol hamjamiyat yaratish"
+      },
+      "search": {
+        "title": "Qidiruv tizimi",
+        "description": "Kitoblarni tezkor va qulay qidirish imkoniyati"
+      },
+      "availability": {
+        "title": "24/7 Xizmat",
+        "description": "Kutubxona xizmatlariga kunning istalgan vaqtida kirish imkoniyati"
+      },
+      "security": {
+        "title": "Xavfsizlik",
+        "description": "Ma'lumotlar va shaxsiy ma'lumotlarning xavfsizligini ta'minlash"
+      },
+      "innovation": {
+        "title": "Innovatsiya",
+        "description": "Zamonaviy texnologiyalarni joriy etish va tizimni doimiy takomillashtirish"
+      },
+      "education": {
+        "title": "Ta'lim",
+        "description": "Kitobxonlik madaniyatini rivojlantirish va bilim olishni qo'llab-quvvatlash"
+      },
+      "accessibility": {
+        "title": "Qulaylik",
+        "description": "Barcha foydalanuvchilar uchun qulay va tushunarli interfeys"
+      },
+      "integration": {
+        "title": "Integratsiya",
+        "description": "Boshqa ta'lim resurslari va kutubxonalar bilan hamkorlik"
       }
     },
     "faq": {

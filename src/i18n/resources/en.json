@@ -1,0 +1,100 @@
+{
+  "common": {
+    "loading": "Loading",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "close": "Close",
+    "search": "Search",
+    "noResults": "No results found",
+    "error": "An error occurred"
+  },
+  "about": {
+    "title": "About Us",
+    "description": "Creative Bookworm is a modern library system designed to streamline the relationship between readers and libraries, and to promote reading culture.",
+    "goals": {
+      "title": "Project Goals",
+      "easyAccess": {
+        "title": "Easy Book Access",
+        "description": "Providing convenient and quick access to library resources for all readers"
+      },
+      "digitalization": {
+        "title": "Digitalization",
+        "description": "Automating and digitalizing library processes using modern technologies"
+      },
+      "community": {
+        "title": "Community",
+        "description": "Creating an active community between libraries and readers"
+      },
+      "search": {
+        "title": "Search System",
+        "description": "Quick and convenient book search functionality"
+      },
+      "availability": {
+        "title": "24/7 Service",
+        "description": "Access to library services at any time of the day"
+      },
+      "security": {
+        "title": "Security",
+        "description": "Ensuring the security of data and personal information"
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "Implementing modern technologies and continuous system improvement"
+      },
+      "education": {
+        "title": "Education",
+        "description": "Developing reading culture and supporting learning"
+      },
+      "accessibility": {
+        "title": "Convenience",
+        "description": "User-friendly and intuitive interface for all users"
+      },
+      "integration": {
+        "title": "Integration",
+        "description": "Collaboration with other educational resources and libraries"
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "howToRegister": {
+        "question": "How can I register?",
+        "answer": "Click the 'Register' button and fill in the required information. Additional information is required for library registration."
+      },
+      "borrowBooks": {
+        "question": "How can I borrow books?",
+        "answer": "You need to log in first. Then select the book you want and click the 'Borrow' button, following the instructions."
+      },
+      "returnBooks": {
+        "question": "How do I return books?",
+        "answer": "You need to return borrowed books to the library within the specified period. The librarian will check the book and mark it as returned in the system."
+      },
+      "lateReturns": {
+        "question": "Are there fines for late returns?",
+        "answer": "Yes, there is a fine for each day delayed beyond the due date. The fine amount is set by the library."
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "address": {
+        "title": "Address",
+        "value": "Tashkent city, Chilanzar district, Block 1"
+      },
+      "phone": {
+        "title": "Phone",
+        "value": "+998 71 123 45 67"
+      },
+      "email": {
+        "title": "Email",
+        "value": "info@creativebookworm.uz"
+      },
+      "workingHours": {
+        "title": "Working Hours",
+        "value": "Monday - Saturday: 09:00 - 18:00"
+      }
+    }
+  }
+}

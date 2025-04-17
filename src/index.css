@@ -116,3 +116,7 @@
     opacity: 1;
   }
 }
+
+body {
+  overflow-x: hidden;
+}

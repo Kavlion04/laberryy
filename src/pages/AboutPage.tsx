@@ -13,26 +13,76 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { useEffect } from "react";
+import {
+  Book,
+  BookOpen,
+  Users,
+  Laptop,
+  Mail,
+  Phone,
+  MessageSquare,
+  Search,
+  Clock,
+  Shield,
+  Lightbulb,
+  GraduationCap,
+  MousePointer,
+  Link,
+} from "lucide-react";
 
 const AboutPage = () => {
   const { t } = useTranslation();
 
   const goals = [
     {
-      title: t("about.goals.accessibility.title"),
-      description: t("about.goals.accessibility.description"),
-      icon: "📚",
+      icon: <BookOpen className="h-12 w-12 text-primary" />,
+      title: t("about.goals.easyAccess.title"),
+      description: t("about.goals.easyAccess.description"),
     },
     {
+      icon: <Laptop className="h-12 w-12 text-primary" />,
       title: t("about.goals.digitalization.title"),
       description: t("about.goals.digitalization.description"),
-      icon: "💻",
     },
     {
+      icon: <Users className="h-12 w-12 text-primary" />,
       title: t("about.goals.community.title"),
       description: t("about.goals.community.description"),
-      icon: "🤝",
+    },
+    {
+      icon: <Search className="h-12 w-12 text-primary" />,
+      title: t("about.goals.search.title"),
+      description: t("about.goals.search.description"),
+    },
+    {
+      icon: <Clock className="h-12 w-12 text-primary" />,
+      title: t("about.goals.availability.title"),
+      description: t("about.goals.availability.description"),
+    },
+    {
+      icon: <Shield className="h-12 w-12 text-primary" />,
+      title: t("about.goals.security.title"),
+      description: t("about.goals.security.description"),
+    },
+    {
+      icon: <Lightbulb className="h-12 w-12 text-primary" />,
+      title: t("about.goals.innovation.title"),
+      description: t("about.goals.innovation.description"),
+    },
+    {
+      icon: <GraduationCap className="h-12 w-12 text-primary" />,
+      title: t("about.goals.education.title"),
+      description: t("about.goals.education.description"),
+    },
+    {
+      icon: <MousePointer className="h-12 w-12 text-primary" />,
+      title: t("about.goals.accessibility.title"),
+      description: t("about.goals.accessibility.description"),
+    },
+    {
+      icon: <Link className="h-12 w-12 text-primary" />,
+      title: t("about.goals.integration.title"),
+      description: t("about.goals.integration.description"),
     },
   ];
 
@@ -56,7 +106,7 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="container mx-auto p-4 space-y-8">
+    <div style={{"marginLeft" : "-40px"}} className="container   mx-auto p-4 space-y-8">
       <Card>
         <CardHeader>
           <CardTitle>{t("about.title")}</CardTitle>
@@ -72,7 +122,7 @@ const AboutPage = () => {
         <CardHeader>
           <CardTitle>{t("about.goals.title")}</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-8 md:px-12">
           <div className="relative">
             <Carousel
               opts={{
@@ -85,25 +135,31 @@ const AboutPage = () => {
                 {goals.map((goal, index) => (
                   <CarouselItem
                     key={index}
-                    className="md:basis-1/2 lg:basis-1/3 pl-4"
+                    className="md:basis-1/2 lg:basis-1/3 pl-2 sm:pl-4"
                   >
-                    <div className="p-4 border rounded-lg h-full flex flex-col items-center text-center">
-                      <div className="text-4xl mb-4">{goal.icon}</div>
-                      <h3 className="text-xl font-semibold mb-2">
-                        {goal.title}
-                      </h3>
-                      <p className="text-muted-foreground">
-                        {goal.description}
-                      </p>
-                    </div>
+                    <Card className="h-full">
+                      <CardContent className="p-4 sm:p-6 text-center space-y-4 flex flex-col justify-between h-full">
+                        <div>
+                          <div className="flex justify-center mb-4">
+                            {goal.icon}
+                          </div>
+                          <h3 className="font-semibold text-lg mb-2">
+                            {goal.title}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {goal.description}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <div className="absolute -left-12 top-1/2 -translate-y-1/2">
-                <CarouselPrevious />
+              <div className="absolute -left-2 sm:-left-0 top-1/2 -translate-y-1/2">
+                <CarouselPrevious className="bg-background border-primary" />
               </div>
-              <div className="absolute -right-12 top-1/2 -translate-y-1/2">
-                <CarouselNext />
+              <div className="absolute -right-2 sm:-right-0 top-1/2 -translate-y-1/2">
+                <CarouselNext className="bg-background border-primary" />
               </div>
             </Carousel>
           </div>
