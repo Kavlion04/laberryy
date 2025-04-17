@@ -196,13 +196,13 @@ const Profile = () => {
         </Card>
       </div>
 
-      <LocationMap
+      {/* <LocationMap
         isOpen={isMapOpen}
         onClose={() => setIsMapOpen(false)}
-        onConfirm={handleMapSelect}
+        // onConfirm={handleMapSelect}
         defaultLatitude={user.latitude}
         defaultLongitude={user.longitude}
-      />
+      /> */}
     </div>
   );
 };

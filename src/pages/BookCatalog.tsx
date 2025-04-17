@@ -1,9 +1,8 @@
-
-import { useEffect, useState } from 'react';
-import { fetchBooks } from '@/services/api';
-import { Book } from '@/types';
-import BookGrid from '@/components/books/BookGrid';
-import { toast } from '@/components/ui/sonner';
+import { useEffect, useState } from "react";
+import { fetchBooks } from "@/services/api";
+import { Book } from "@/types";
+import BookGrid from "@/components/books/BookGrid";
+import { toast } from "@/components/ui/sonner";
 
 const BookCatalog = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -19,15 +18,15 @@ const BookCatalog = () => {
       const data = await fetchBooks();
       setBooks(data);
     } catch (error) {
-      console.error('Error loading books:', error);
-      toast.error('Failed to load books. Please try again later.');
+      console.error("Error loading books:", error);
+      toast.error("Failed to load books. Please try again later.");
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleBookDelete = (id: number) => {
-    setBooks(books.filter(book => book.id !== id));
+    setBooks(books.filter((book) => book.id !== id));
   };
 
   return (

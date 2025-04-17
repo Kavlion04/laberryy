@@ -10,7 +10,7 @@
     "close": "Yopish",
     "search": "Qidirish",
     "noResults": "Natija topilmadi",
-    "error": "Xatolik yuz berdi"
+    "error": "Xatolik"
   },
   "home": {
     "title": "Creative Bookworm - Zamonaviy kutubxona tizimi",
@@ -81,8 +81,22 @@
       "socialMedia": "Ijtimoiy tarmoq",
       "canRentBooks": "Kitob ijarasi mavjud",
       "userInfo": "Foydalanuvchi ma'lumotlari",
-      "libraryInfo": "Kutubxona ma'lumotlari"
-    }
+      "libraryInfo": "Kutubxona ma'lumotlari",
+      "registerDescription": "Tizimdan foydalanish uchun ro'yxatdan o'ting",
+      "registerSuccess": "Muvaffaqiyatli ro'yxatdan o'tdingiz",
+      "registerSuccessDesc": "Tizimga kirishingiz mumkin",
+      "registerError": "Ro'yxatdan o'tishda xatolik yuz berdi",
+      "email": "Email",
+      "customer": "Kitobxon",
+      "library": "Kutubxona",
+      "libraryName": "Kutubxona nomi",
+      "latitude": "Kenglik",
+      "longitude": "Uzunlik",
+      "addressPlaceholder": "Manzilni tanlash uchun xaritani oching",
+      "selectLocation": "Manzilni tanlang",
+      "locationSelected": "Manzil tanlandi"
+    },
+    "logout": "Chiqish"
   },
   "library": {
     "viewOnMap": "Xaritada ko'rish",
@@ -92,15 +106,17 @@
     "details": "Kutubxona tafsilotlari"
   },
   "book": {
-    "title": "Nomi",
+    "catalog": "Kitoblar katalogi",
+    "totalBooks": "Jami {{count}} ta kitob",
+    "name": "Nomi",
     "author": "Muallif",
-    "isbn": "ISBN",
-    "status": "Holati",
-    "status_available": "Mavjud",
-    "status_borrowed": "Ijarada"
+    "publisher": "Nashriyot",
+    "quantity": "Soni",
+    "library": "Kutubxona",
+    "fetchError": "Kitoblarni yuklashda xatolik yuz berdi"
   },
   "map": {
-    "title": "Joylashuv tanlash",
+    "title": "Manzilni tanlang",
     "searchPlaceholder": "Manzilni qidiring",
     "selectedLocation": "Tanlangan manzil",
     "latitude": "Kenglik",

@@ -1,27 +1,19 @@
 
 export interface Book {
   id: number;
-  title: string;
+  name: string;
   author: string;
-  isbn: string;
-  published_date: string;
-  genre: string;
-  description: string;
-  cover_image?: string;
-  copies_available: number;
-  total_copies: number;
+  publisher : string;
+  quantity_in_library: number;
 }
 
 export interface BookFormData {
-  title: string;
+  name: string;
   author: string;
-  isbn: string;
   published_date: string;
-  genre: string;
-  description: string;
   cover_image?: string;
   copies_available: number;
-  total_copies: number;
+  quantity_in_library: number;
 }
 
 export type UserRole = 'customer' | 'librarian';

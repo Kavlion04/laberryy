@@ -96,5 +96,26 @@
         "value": "Monday - Saturday: 09:00 - 18:00"
       }
     }
+  },
+  "auth": {
+    "register": "Register",
+    "registerDescription": "Register to use the system",
+    "registerSuccess": "Successfully registered",
+    "registerSuccessDesc": "You can now login",
+    "registerError": "Registration failed",
+    "login": "Login",
+    "logout": "Logout",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "phone": "Phone",
+    "customer": "Customer",
+    "library": "Library",
+    "libraryName": "Library name",
+    "address": "Address",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "selectLocation": "Select location",
+    "locationSelected": "Location selected"
   }
 }

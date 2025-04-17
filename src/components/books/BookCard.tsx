@@ -37,7 +37,7 @@ const BookCard = ({ book, onDelete }: BookCardProps) => {
     try {
       const success = await deleteBook(book.id);
       if (success) {
-        toast.success(`"${book.title}" has been deleted`);
+        toast.success(`"${book.name}" has been deleted`);
         onDelete?.(book.id);
       } else {
         toast.error("Failed to delete book");
@@ -51,7 +51,6 @@ const BookCard = ({ book, onDelete }: BookCardProps) => {
   };
 
   const handleCardClick = (e: React.MouseEvent) => {
-    // Prevent navigation if clicking on a button or dialog
     if ((e.target as HTMLElement).closest('button') || 
         (e.target as HTMLElement).closest('[role="dialog"]')) {
       return;
@@ -60,11 +59,9 @@ const BookCard = ({ book, onDelete }: BookCardProps) => {
   };
 
   const getAvailabilityColor = () => {
-    // Ensure we're working with valid numbers
-    const available = typeof book.copies_available === 'number' ? book.copies_available : 0;
-    const total = typeof book.total_copies === 'number' ? book.total_copies : 0;
+    const available = typeof book.quantity_in_library === 'number' ? book.quantity_in_library : 0;
+    const total = typeof book.quantity_in_library === 'number' ? book.quantity_in_library : 0;
     
-    // Avoid division by zero
     if (total === 0) return "warning";
     
     const ratio = available / total;
@@ -91,17 +88,16 @@ const BookCard = ({ book, onDelete }: BookCardProps) => {
           </div>
         )}
         <Badge className="absolute top-2 right-2" variant={getAvailabilityColor() as any}>
-          {typeof book.copies_available === 'number' ? book.copies_available : 0} of {typeof book.total_copies === 'number' ? book.total_copies : 0} available
+          {typeof book.quantity_in_library === 'number' ? book.quantity_in_library : 0} of {typeof book.quantity_in_library === 'number' ? book.quantity_in_library : 0} available
         </Badge>
       </div>
       
       <CardContent className="pt-4 flex-grow">
-        <h3 className="text-lg font-semibold line-clamp-2">{book.title || 'Untitled'}</h3>
+        <h3 className="text-lg font-semibold line-clamp-2">{book.name || 'Untitled'}</h3>
         <p className="text-sm text-muted-foreground">{book.author || 'Unknown Author'}</p>
         <div className="mt-2 flex items-center">
-          <Badge variant="outline" className="mr-2">{book.genre || 'General'}</Badge>
           <span className="text-xs text-muted-foreground">
-            {book.published_date ? new Date(book.published_date).getFullYear() : 'Unknown year'}
+            <p className="text-sm font-semibold line-clamp-2">{book.publisher || 'Untitled'}</p>
           </span>
         </div>
       </CardContent>
@@ -111,7 +107,7 @@ const BookCard = ({ book, onDelete }: BookCardProps) => {
           variant="outline" 
           className="flex-1"
           onClick={(e) => {
-            e.stopPropagation(); // Prevent card click
+            e.stopPropagation(); 
             navigate(`/books/${book.id}`);
           }}
         >
@@ -124,7 +120,7 @@ const BookCard = ({ book, onDelete }: BookCardProps) => {
               size="icon" 
               variant="ghost" 
               onClick={(e) => {
-                e.stopPropagation(); // Prevent card click
+                e.stopPropagation(); 
                 navigate(`/edit-book/${book.id}`);
               }}
             >
@@ -137,23 +133,23 @@ const BookCard = ({ book, onDelete }: BookCardProps) => {
                   size="icon" 
                   variant="ghost" 
                   className="text-destructive hover:text-destructive"
-                  onClick={(e) => e.stopPropagation()} // Prevent card click
+                  onClick={(e) => e.stopPropagation()} 
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </AlertDialogTrigger>
-              <AlertDialogContent onClick={(e) => e.stopPropagation()}> {/* Prevent card click */}
+              <AlertDialogContent onClick={(e) => e.stopPropagation()}> 
                 <AlertDialogHeader>
                   <AlertDialogTitle>Delete Book</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Are you sure you want to delete "{book.title}"? This action cannot be undone.
+                    Are you sure you want to delete "{book.name}"? This action cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction 
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent card click
+                      e.stopPropagation(); 
                       handleDelete();
                     }} 
                     disabled={isDeleting}

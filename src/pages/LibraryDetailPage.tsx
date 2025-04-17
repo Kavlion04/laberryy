@@ -49,6 +49,11 @@ const LibraryDetailPage = () => {
   const [booksData, setBooksData] = useState<LibraryBooksResponse | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [isMapOpen, setIsMapOpen] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState<{
+    lat: number;
+    lng: number;
+    address: string;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchLibraryDetails = async () => {
@@ -82,6 +87,11 @@ const LibraryDetailPage = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleLocationSelect = (lat: number, lng: number, address: string) => {
+    setSelectedLocation({ lat, lng, address });
+    setIsMapOpen(false);
   };
 
   useEffect(() => {
@@ -215,11 +225,12 @@ const LibraryDetailPage = () => {
       <LocationMap
         isOpen={isMapOpen}
         onClose={() => setIsMapOpen(false)}
-        defaultLocation={{
-          lat: library.latitude,
-          lng: library.longitude,
-        }}
-        onLocationSelect={() => {}}
+        onLocationSelect={handleLocationSelect}
+        defaultLocation={
+          library?.latitude && library?.longitude
+            ? { lat: library.latitude, lng: library.longitude }
+            : undefined
+        }
       />
     </div>
   );

@@ -102,6 +102,7 @@ const RegisterModal = ({
     form.setValue("address", address);
     form.setValue("latitude", lat);
     form.setValue("longitude", lng);
+    setIsMapOpen(false);
   };
 
   const onSubmit = async (data: any) => {
@@ -249,19 +250,43 @@ const RegisterModal = ({
                         <FormControl>
                           <div className="relative">
                             <MapPin className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                            <Input
-                              placeholder="123 Library St, City, Country"
-                              className="pl-10"
-                              {...field}
-                              disabled={isLoading}
-                              value={selectedLocation.address || field.value}
-                              onClick={() => setIsMapOpen(true)}
-                            />
+                            <div className="flex gap-2">
+                              <Input
+                                placeholder={t(
+                                  "auth.register.addressPlaceholder"
+                                )}
+                                className="pl-10"
+                                {...field}
+                                disabled={isLoading}
+                                value={selectedLocation.address || field.value}
+                                readOnly
+                              />
+                              <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setIsMapOpen(true)}
+                                disabled={isLoading}
+                              >
+                                <MapPin className="h-4 w-4" />
+                              </Button>
+                            </div>
                           </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
+                  />
+
+                  {/* Hidden latitude and longitude fields */}
+                  <input
+                    type="hidden"
+                    {...form.register("latitude")}
+                    value={selectedLocation.lat}
+                  />
+                  <input
+                    type="hidden"
+                    {...form.register("longitude")}
+                    value={selectedLocation.lng}
                   />
 
                   <div className="space-y-2">

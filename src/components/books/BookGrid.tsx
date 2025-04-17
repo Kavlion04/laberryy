@@ -23,45 +23,38 @@ const BookGrid = ({ books, onBookDelete }: BookGridProps) => {
   const [availabilityFilter, setAvailabilityFilter] = useState('all');
   const [sortBy, setSortBy] = useState('title');
   
-  // Ensure books is always an array, even if undefined or null
   const safeBooks = Array.isArray(books) ? books : [];
   
-  // Extract unique genres - add null check
-  const genres = ['all', ...new Set(safeBooks.map(book => book.genre || 'Noma\'lum'))];
+  const genres = ['all', ...new Set(safeBooks.map(book => book.name || 'Noma\'lum'))];
   
-  // Filter books based on filters - add more robust null checks for all properties
   const filteredBooks = safeBooks.filter(book => {
-    // Add null checks for title and author
-    const title = (book.title || '').toString();
+    const title = (book.name || '').toString();
     const author = (book.author || '').toString();
-    const genre = book.genre || '';
+    
     
     const matchesSearch = 
       searchTerm === '' || 
       title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       author.toLowerCase().includes(searchTerm.toLowerCase());
                           
-    const matchesGenre = genreFilter === 'all' || genre === genreFilter;
+    const matchesGenre = genreFilter === 'all' || author === genreFilter;
     
     const matchesAvailability = 
       availabilityFilter === 'all' || 
-      (availabilityFilter === 'available' && (book.copies_available || 0) > 0) ||
-      (availabilityFilter === 'unavailable' && (book.copies_available || 0) === 0);
+      (availabilityFilter === 'available' && (book.quantity_in_library || 0) > 0) ||
+      (availabilityFilter === 'unavailable' && (book.quantity_in_library || 0) === 0);
       
     return matchesSearch && matchesGenre && matchesAvailability;
   });
   
-  // Sort books - add robust null checks for sorting properties
   const sortedBooks = [...filteredBooks].sort((a, b) => {
     switch(sortBy) {
       case 'title':
-        return (a.title || '').toString().localeCompare((b.title || '').toString());
+        return (a.name || '').toString().localeCompare((b.name || '').toString());
       case 'author':
         return (a.author || '').toString().localeCompare((b.author || '').toString());
-      case 'published_date':
-        return new Date(b.published_date || '2000-01-01').getTime() - new Date(a.published_date || '2000-01-01').getTime();
       case 'available':
-        return (b.copies_available || 0) - (a.copies_available || 0);
+        return (b.quantity_in_library || 0) - (a.quantity_in_library || 0);
       default:
         return 0;
     }

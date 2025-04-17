@@ -65,7 +65,7 @@ const BookDetails = () => {
     try {
       const success = await deleteBook(book.id);
       if (success) {
-        toast.success(`"${book.title}" has been deleted`);
+        toast.success(`"${book.name}" has been deleted`);
         navigate('/books');
       } else {
         toast.error('Failed to delete book');
@@ -81,7 +81,7 @@ const BookDetails = () => {
   const getAvailabilityColor = () => {
     if (!book) return "secondary";
     
-    const ratio = book.copies_available / book.total_copies;
+    const ratio = book.quantity_in_library / book.quantity_in_library;
     if (ratio === 0) return "destructive";
     if (ratio < 0.3) return "secondary";
     return "primary";
@@ -122,17 +122,17 @@ const BookDetails = () => {
         <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        <h1 className="text-3xl font-bold tracking-tight">{book.title}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{book.name}</h1>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="order-2 md:order-1 flex flex-col gap-6">
           <Card className="book-card overflow-hidden">
             <div className="aspect-[2/3] relative">
-              {book.cover_image ? (
+              {book.publisher ? (
                 <img
-                  src={book.cover_image}
-                  alt={book.title}
+                  src={book.publisher}
+                  alt={book.name}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -141,7 +141,7 @@ const BookDetails = () => {
                 </div>
               )}
               <Badge className="absolute bottom-4 right-4" variant={getAvailabilityColor() as any}>
-                {book.copies_available} of {book.total_copies} available
+                {book.quantity_in_library} of {book.quantity_in_library} available
               </Badge>
             </div>
           </Card>
@@ -157,26 +157,16 @@ const BookDetails = () => {
                 
                 <div className="flex items-center gap-2">
                   <Hash className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">ISBN:</span>
-                  <span className="font-medium">{book.isbn}</span>
+                  <span className="text-sm text-muted-foreground">name:</span>
+                  <span className="font-medium">{book.name}</span>
                 </div>
                 
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Published:</span>
-                  <span className="font-medium">
-                    {new Date(book.published_date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </span>
-                </div>
+               
                 
                 <div className="flex items-center gap-2">
                   <Library className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Genre:</span>
-                  <Badge variant="outline">{book.genre}</Badge>
+                  <span className="text-sm text-muted-foreground">soni:</span>
+                  <Badge variant="outline">{book.quantity_in_library}</Badge>
                 </div>
               </div>
             </CardContent>
@@ -188,7 +178,7 @@ const BookDetails = () => {
             <CardContent className="p-6 space-y-6">
               <div>
                 <h2 className="text-xl font-semibold mb-2">About this book</h2>
-                <p className="whitespace-pre-line">{book.description}</p>
+                
               </div>
               
               <Separator />
@@ -197,11 +187,11 @@ const BookDetails = () => {
                 <h2 className="text-xl font-semibold mb-3">Availability</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-muted rounded-lg p-4 text-center">
-                    <div className="text-2xl font-bold">{book.copies_available}</div>
+                    <div className="text-2xl font-bold">{book.quantity_in_library}</div>
                     <div className="text-sm text-muted-foreground">Available Copies</div>
                   </div>
                   <div className="bg-muted rounded-lg p-4 text-center">
-                    <div className="text-2xl font-bold">{book.total_copies}</div>
+                    <div className="text-2xl font-bold">{book.quantity_in_library}</div>
                     <div className="text-sm text-muted-foreground">Total Copies</div>
                   </div>
                 </div>
@@ -212,10 +202,10 @@ const BookDetails = () => {
                   <Separator />
                   <div className="flex justify-center">
                     <Button
-                      disabled={book.copies_available === 0}
+                      disabled={book.quantity_in_library === 0}
                       className="w-full md:w-auto"
                     >
-                      {book.copies_available > 0 ? 'Borrow this Book' : 'Currently Unavailable'}
+                      {book.quantity_in_library > 0 ? 'Borrow this Book' : 'Currently Unavailable'}
                     </Button>
                   </div>
                 </>
@@ -243,7 +233,7 @@ const BookDetails = () => {
                         <AlertDialogHeader>
                           <AlertDialogTitle>Delete Book</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Are you sure you want to delete "{book.title}"? This action cannot be undone.
+                            Are you sure you want to delete "{book.name}"? This action cannot be undone.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
