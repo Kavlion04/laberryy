@@ -1,5 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { Search, MapPin, Phone, Loader2 } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -8,135 +15,224 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search, MapPin, Phone } from "lucide-react";
+
+interface Library {
+  id: number;
+  name: string;
+  address: string;
+  description: string;
+  phone: string;
+  latitude: number;
+  longitude: number;
+  booksCount: number;
+}
+
+interface LibrariesResponse {
+  libraries: Library[];
+  total: number;
+  page: number;
+  totalPages: number;
+}
+
+const INITIAL_LIBRARIES_DATA: LibrariesResponse = {
+  libraries: [],
+  total: 0,
+  page: 1,
+  totalPages: 0,
+};
 
 const LibrariesPage = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const [librariesData, setLibrariesData] = useState<LibrariesResponse>(
+    INITIAL_LIBRARIES_DATA
+  );
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Mock data for libraries
-  const libraries = [
-    {
-      id: 1,
-      name: "Markaziy kutubxona",
-      address: "Toshkent sh., Chilonzor tumani, 1-mavze",
-      phone: "+998901234567",
-      totalBooks: 5000,
-      canRentBooks: true,
-    },
-    {
-      id: 2,
-      name: "Alisher Navoiy nomidagi kutubxona",
-      address: "Toshkent sh., Yunusobod tumani, 19-mavze",
-      phone: "+998901234568",
-      totalBooks: 8000,
-      canRentBooks: true,
-    },
-    {
-      id: 3,
-      name: "Yoshlar kutubxonasi",
-      address: "Toshkent sh., Mirzo Ulug'bek tumani, 5-mavze",
-      phone: "+998901234569",
-      totalBooks: 3000,
-      canRentBooks: false,
-    },
-    // Add more mock data as needed
-  ];
+  const fetchLibraries = async (page: number, search?: string) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get("/api/libraries/libraries/", {
+        params: {
+          page,
+          limit: 9,
+          search,
+        },
+      });
 
-  const totalPages = Math.ceil(libraries.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentLibraries = libraries.slice(startIndex, endIndex);
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      const data = response.data;
+      if (data && Array.isArray(data.libraries)) {
+        setLibrariesData({
+          libraries: data.libraries || [],
+          total: data.total || 0,
+          page: data.page || 1,
+          totalPages: data.totalPages || 0,
+        });
+      } else {
+        setLibrariesData(INITIAL_LIBRARIES_DATA);
+      }
+    } catch (error) {
+      console.error("Error fetching libraries:", error);
+      toast({
+        title: t("common.error"),
+        description: t("library.fetchError"),
+        variant: "destructive",
+      });
+      setLibrariesData(INITIAL_LIBRARIES_DATA);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      fetchLibraries(currentPage, searchQuery);
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [currentPage, searchQuery]);
+
+  const handleLibraryClick = (libraryId: number) => {
+    navigate(`/libraries/${libraryId}`);
+  };
+
+  const renderLibraryCards = () => {
+    return librariesData.libraries.map((library) => (
+      <Card
+        key={library.id}
+        className="cursor-pointer hover:shadow-lg transition-shadow"
+        onClick={() => handleLibraryClick(library.id)}
+      >
+        <CardContent className="p-4">
+          <h3 className="font-semibold text-lg mb-2">{library.name}</h3>
+          <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+            {library.description}
+          </p>
+          <div className="space-y-2">
+            <div className="flex items-center text-sm">
+              <MapPin className="h-4 w-4 mr-2" />
+              <span className="line-clamp-1">{library.address}</span>
+            </div>
+            <div className="flex items-center text-sm">
+              <Phone className="h-4 w-4 mr-2" />
+              <span>{library.phone}</span>
+            </div>
+            <div className="text-sm text-muted-foreground">
+              {t("library.booksCount", { count: library.booksCount })}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    ));
+  };
+
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div className="flex justify-center items-center py-8">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      );
     }
+
+    if (
+      !Array.isArray(librariesData?.libraries) ||
+      librariesData.libraries.length === 0
+    ) {
+      return (
+        <div className="text-center py-8 text-muted-foreground">
+          {t("library.noLibrariesFound")}
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {renderLibraryCards()}
+      </div>
+    );
+  };
+
+  const renderPagination = () => {
+    if (
+      isLoading ||
+      !librariesData?.totalPages ||
+      librariesData.totalPages <= 1
+    ) {
+      return null;
+    }
+
+    return (
+      <div className="mt-6 flex justify-center">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                className={
+                  currentPage === 1 ? "pointer-events-none opacity-50" : ""
+                }
+              />
+            </PaginationItem>
+
+            {Array.from(
+              { length: librariesData.totalPages },
+              (_, i) => i + 1
+            ).map((page) => (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  onClick={() => setCurrentPage(page)}
+                  isActive={currentPage === page}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                onClick={() =>
+                  setCurrentPage((p) =>
+                    Math.min(librariesData.totalPages, p + 1)
+                  )
+                }
+                className={
+                  currentPage === librariesData.totalPages
+                    ? "pointer-events-none opacity-50"
+                    : ""
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
+    );
   };
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Kutubxonalar ro'yxati</h1>
-        <div className="flex gap-4">
-          <div className="relative w-64">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Kutubxona qidirish..." className="pl-9" />
+    <div className="container mx-auto p-4 space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("library.libraries")}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="relative mb-6">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder={t("library.searchPlaceholder")}
+              className="pl-8"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
-          <Button>Xaritada ko'rish</Button>
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {currentLibraries.map((library) => (
-          <Card key={library.id}>
-            <CardHeader>
-              <CardTitle>{library.name}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex items-start gap-2">
-                  <MapPin className="w-4 h-4 mt-1 text-muted-foreground" />
-                  <p className="text-sm">{library.address}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-muted-foreground" />
-                  <p className="text-sm">{library.phone}</p>
-                </div>
-                <div className="flex justify-between text-sm text-muted-foreground mt-4">
-                  <span>Jami kitoblar: {library.totalBooks}</span>
-                  <span>
-                    {library.canRentBooks ? "Ijaraga beradi" : "Faqat o'qish"}
-                  </span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={handlePrevPage}
-              className={
-                currentPage === 1 ? "pointer-events-none opacity-50" : ""
-              }
-            />
-          </PaginationItem>
-
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <PaginationItem key={page}>
-              <PaginationLink
-                onClick={() => setCurrentPage(page)}
-                isActive={currentPage === page}
-              >
-                {page}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-
-          <PaginationItem>
-            <PaginationNext
-              onClick={handleNextPage}
-              className={
-                currentPage === totalPages
-                  ? "pointer-events-none opacity-50"
-                  : ""
-              }
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+          {renderContent()}
+          {renderPagination()}
+        </CardContent>
+      </Card>
     </div>
   );
 };
