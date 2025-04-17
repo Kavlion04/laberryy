@@ -1,0 +1,130 @@
+
+{
+  "navbar": {
+    "search": "Search for books...",
+    "login": "Login",
+    "register": "Register",
+    "profile": "Profile",
+    "logout": "Logout",
+    "settings": "Settings"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "bookCatalog": "Book Catalog",
+    "myBooks": "My Books",
+    "addBook": "Add Book",
+    "userManagement": "User Management",
+    "profile": "Profile",
+    "settings": "Settings",
+    "currentRole": "Current Role",
+    "version": "BookMaster Library System v1.0.0"
+  },
+  "dashboard": {
+    "welcome": "Welcome back to BookMaster",
+    "admin": "Admin Panel",
+    "addNewBook": "Add New Book",
+    "stats": {
+      "totalBooks": "Total Books",
+      "booksInCollection": "Books in collection",
+      "availableBooks": "Available Books",
+      "booksForBorrow": "Books available for borrowing",
+      "totalCopies": "Total Copies",
+      "totalInventory": "Total book copies in inventory",
+      "registeredUsers": "Registered Users",
+      "activeUsers": "Active users in system",
+      "borrowedBooks": "Borrowed Books",
+      "currentlyBorrowed": "Books currently borrowed"
+    },
+    "tabs": {
+      "recent": "Recent Books",
+      "popular": "Popular Books",
+      "recommended": "Recommended",
+      "viewAll": "View All Books"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "phone": "Phone Number",
+      "password": "Password",
+      "submit": "Login",
+      "noAccount": "Don't have an account?",
+      "register": "Register now",
+      "success": "Successfully logged in",
+      "error": "Login failed"
+    },
+    "register": {
+      "title": "Register",
+      "userInfo": "User Information",
+      "libraryInfo": "Library Information",
+      "name": "Full Name",
+      "phone": "Phone Number",
+      "password": "Password",
+      "address": "Address",
+      "socialMedia": "Social Media (Optional)",
+      "canRentBooks": "Can rent books",
+      "locationInfo": "Location Information",
+      "selectOnMap": "Select Location on Map",
+      "submit": "Register",
+      "haveAccount": "Already have an account?",
+      "login": "Login",
+      "success": "Registration successful",
+      "error": "Registration failed"
+    },
+    "logout": {
+      "success": "Successfully logged out",
+      "error": "Failed to logout"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "View and manage your account details",
+    "personalInfo": "Personal Information",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "address": "Address",
+    "socialMedia": "Social Media",
+    "mapLocation": "Library Location",
+    "editProfile": "Edit Profile",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel",
+    "updateSuccess": "Profile updated successfully",
+    "updateError": "Failed to update profile"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account and application preferences",
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "textColor": "Text Color",
+    "default": "Default",
+    "blue": "Blue",
+    "green": "Green",
+    "purple": "Purple",
+    "red": "Red",
+    "language": "Language",
+    "english": "English",
+    "uzbek": "O'zbek",
+    "russian": "Русский"
+  },
+  "map": {
+    "title": "Select Location",
+    "subtitle": "Click on the map to set your library location",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "confirm": "Confirm Location",
+    "cancel": "Cancel"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "notFound": "Not Found"
+  }
+}
