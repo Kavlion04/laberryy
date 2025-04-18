@@ -153,20 +153,34 @@
     }
   },
   "library": {
-    "viewOnMap": "Xaritada ko'rish",
-    "description": "Tavsif",
-    "contact": "Bog'lanish",
+    "totalBooks":"Jami kitoblar",
+    "libraries":"Kutubxonalar",
+    "description": "Barcha kutubxonalar",
+    "title": "Kutubxona",
+    "details": "Kutubxona haqida ma'lumot",
+    "name": "Kutubxona nomi",
+    "address": "Manzil",
+    "phone": "Telefon raqam",
+    "status": "Holati",
+    "active": "Faol",
+    "inactive": "Faol emas",
+    "telegram": "Telegram",
     "books": "Kitoblar",
-    "libraries" : "Kutubxonalar",
-    "details": "Kutubxona tafsilotlari"
+    "noBooks": "Bu kutubxonada kitoblar to'plami mavjud emas",
+    "viewOnMap": "Xaritada ko'rish",
+    "canRentBooks": "Kitob ijarasi mavjud",
+    "cantRentBooks": "Kitob ijarasi mavjud emas",
+    "fetchError": "Kutubxona ma'lumotlarini yuklashda xatolik yuz berdi",
+    "notFound": "Kutubxona ma'lumotlari topilmadi"
   },
   "book": {
-    "title": "Nomi",
+    "title": "Kitob",
+    "name": "Kitob nomi",
     "author": "Muallif",
-    "isbn": "ISBN",
-    "status": "Holati",
-    "status_available": "Mavjud",
-    "status_borrowed": "Ijarada"
+    "publisher": "Nashriyot",
+    "quantity": "Soni",
+    "available": "Mavjud",
+    "notAvailable": "Mavjud emas"
   },
   "map": {
     "title": "Joylashuv tanlash",

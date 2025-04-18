@@ -1,16 +1,18 @@
 {
   "common": {
     "loading": "Loading",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
+    "error": "Error",
+    "success": "Success",
     "save": "Save",
+    "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
+    "confirm": "Confirm",
+    "back": "Back",
     "view": "View",
     "close": "Close",
     "search": "Search",
-    "noResults": "No results found",
-    "error": "An error occurred"
+    "noResults": "No results found"
   },
   "about": {
     "title": "About Us",
@@ -117,5 +119,32 @@
     "longitude": "Longitude",
     "selectLocation": "Select location",
     "locationSelected": "Location selected"
+  },
+  "library": {
+    "title": "Library",
+    "details": "Library Information",
+    "name": "Library Name",
+    "address": "Address",
+    "phone": "Phone",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "telegram": "Telegram",
+    "books": "Books",
+    "noBooks": "This library has no books available",
+    "viewOnMap": "View on Map",
+    "canRentBooks": "Book rental available",
+    "cantRentBooks": "Book rental not available",
+    "fetchError": "Error loading library data",
+    "notFound": "Library information not found"
+  },
+  "book": {
+    "title": "Book",
+    "name": "Book Name",
+    "author": "Author",
+    "publisher": "Publisher",
+    "quantity": "Quantity",
+    "available": "Available",
+    "notAvailable": "Not Available"
   }
 }

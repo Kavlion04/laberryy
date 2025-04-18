@@ -1,66 +1,92 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Map } from "lucide-react";
-import LocationMap from "@/components/map/LocationMap";
+import {
+  Map,
+  ChevronLeft,
+  ChevronRight,
+  Phone,
+  ArrowLeft,
+  ExternalLink,
+} from "lucide-react";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  PaginationRoot,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination-root";
 
 interface Book {
   id: number;
-  title: string;
+  library: number;
+  name: string;
   author: string;
-  isbn: string;
-  status: "available" | "borrowed";
+  publisher: string;
+  quantity_in_library: number;
+}
+
+interface SocialMedia {
+  telegram: string | null;
 }
 
 interface Library {
   id: number;
+  user: number;
   name: string;
+  image: string | null;
   address: string;
-  description: string;
-  phone: string;
-  latitude: number;
-  longitude: number;
+  social_media: SocialMedia;
+  can_rent_books: boolean;
+  google_maps_url: string | null;
+  phone: string | null;
+  is_active: boolean;
+  books: Book[];
 }
 
-interface LibraryBooksResponse {
-  books: Book[];
-  total: number;
-  page: number;
-  totalPages: number;
+interface LibraryResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: {
+    library: Library;
+  };
 }
+
+const api = axios.create({
+  baseURL: "https://s-libraries.uz/api/v1",
+  timeout: 5000,
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+const BOOKS_PER_SLIDE = 3;
+const DEFAULT_LIBRARY_IMAGE = "/src/assets/photo_2025-04-11_15-14-49 (2).jpg";
 
 const LibraryDetailPage = () => {
   const { id } = useParams();
   const { t } = useTranslation();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [library, setLibrary] = useState<Library | null>(null);
-  const [booksData, setBooksData] = useState<LibraryBooksResponse | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isMapOpen, setIsMapOpen] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState<{
-    lat: number;
-    lng: number;
-    address: string;
-  } | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const fetchLibraryDetails = async () => {
     try {
-      const response = await axios.get(`/api/libraries/${id}`);
-      setLibrary(response.data);
+      const response = await api.get<LibraryResponse>(
+        `/libraries/library/${id}/`
+      );
+
+      if (response.data?.results?.library) {
+        setLibrary(response.data.results.library);
+      } else {
+        toast({
+          title: t("common.error"),
+          description: t("library.notFound"),
+          variant: "destructive",
+        });
+      }
     } catch (error) {
+      console.error("Error fetching library details:", error);
       toast({
         title: t("common.error"),
         description: t("library.fetchError"),
@@ -69,169 +95,235 @@ const LibraryDetailPage = () => {
     }
   };
 
-  const fetchLibraryBooks = async (page: number) => {
-    try {
-      const response = await axios.get(`/api/libraries/${id}/books`, {
-        params: {
-          page,
-          limit: 10,
-        },
-      });
-      setBooksData(response.data);
-    } catch (error) {
-      toast({
-        title: t("common.error"),
-        description: t("library.booksError"),
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleLocationSelect = (lat: number, lng: number, address: string) => {
-    setSelectedLocation({ lat, lng, address });
-    setIsMapOpen(false);
-  };
-
   useEffect(() => {
-    setIsLoading(true);
     fetchLibraryDetails();
   }, [id]);
 
-  useEffect(() => {
-    if (library) {
-      fetchLibraryBooks(currentPage);
-    }
-  }, [currentPage, library]);
+  const totalSlides = Math.ceil(
+    (library?.books?.length || 0) / BOOKS_PER_SLIDE
+  );
 
-  if (isLoading || !library || !booksData) {
-    return <div className="p-4">{t("common.loading")}...</div>;
+  const handleNextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+  };
+
+  const handlePrevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  };
+
+  const currentBooks =
+    library?.books?.slice(
+      currentSlide * BOOKS_PER_SLIDE,
+      (currentSlide + 1) * BOOKS_PER_SLIDE
+    ) || [];
+
+  if (!library) {
+    return (
+      <div className="container mx-auto p-4">
+        <Card>
+          <CardContent className="p-8 text-center">
+            <div className="animate-pulse">
+              <div className="h-4 bg-gray-200 rounded w-1/4 mx-auto mb-4"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
+
+  const handleMapClick = () => {
+    if (library.google_maps_url) {
+      window.open(library.google_maps_url, "_blank", "noopener,noreferrer");
+    }
+  };
 
   return (
     <div className="container mx-auto p-4 space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex justify-between items-center">
-            <span>{library.name}</span>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setIsMapOpen(true)}
-            >
-              <Map className="h-4 w-4 mr-2" />
-              {t("library.viewOnMap")}
-            </Button>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <h3 className="font-semibold">{t("library.description")}</h3>
-            <p>{library.description}</p>
-          </div>
-          <div>
-            <h3 className="font-semibold">{t("library.contact")}</h3>
-            <p>{library.address}</p>
-            <p>{library.phone}</p>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex items-center gap-4 mb-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          {t("common.back")}
+        </Button>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>{t("library.books")}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2">{t("book.title")}</th>
-                  <th className="text-left py-2">{t("book.author")}</th>
-                  <th className="text-left py-2">{t("book.isbn")}</th>
-                  <th className="text-left py-2">{t("book.status")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {booksData.books.map((book) => (
-                  <tr key={book.id} className="border-b">
-                    <td className="py-2">{book.title}</td>
-                    <td className="py-2">{book.author}</td>
-                    <td className="py-2">{book.isbn}</td>
-                    <td className="py-2">
-                      <span
-                        className={`px-2 py-1 rounded-full text-sm ${
-                          book.status === "available"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-yellow-100 text-yellow-800"
-                        }`}
-                      >
-                        {t(`book.status_${book.status}`)}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="mt-4 flex justify-center">
-            <PaginationRoot>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                    className={
-                      currentPage === 1 ? "pointer-events-none opacity-50" : ""
-                    }
-                  />
-                </PaginationItem>
-
-                {Array.from(
-                  { length: booksData.totalPages },
-                  (_, i) => i + 1
-                ).map((page) => (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      onClick={() => setCurrentPage(page)}
-                      isActive={currentPage === page}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("library.details")}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <h3 className="font-semibold mb-2">{t("library.name")}</h3>
+                <p>{library.name}</p>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">{t("library.address")}</h3>
+                <div className="flex items-center gap-2">
+                  <p>{library.address}</p>
+                  {library.google_maps_url && (
+                    <button
+                      onClick={handleMapClick}
+                      className="text-blue-600 hover:text-blue-800"
+                      title={t("library.viewOnMap")}
                     >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
+                      <Map className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">{t("library.status")}</h3>
+                <p>
+                  {library.is_active
+                    ? t("library.active")
+                    : t("library.inactive")}
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">
+                  {t("library.canRentBooks")}
+                </h3>
+                <p>
+                  {library.can_rent_books
+                    ? t("library.canRentBooks")
+                    : t("library.cantRentBooks")}
+                </p>
+              </div>
+              {library.phone && (
+                <div>
+                  <h3 className="font-semibold mb-2">{t("library.phone")}</h3>
+                  <Button
+                    variant="link"
+                    className="p-0 h-auto font-normal text-blue-600 hover:text-blue-800"
+                    onClick={() => window.open(`tel:${library.phone}`)}
+                  >
+                    <Phone className="h-4 w-4 mr-2 inline" />
+                    {library.phone}
+                  </Button>
+                </div>
+              )}
+              {library.social_media?.telegram && (
+                <div>
+                  <h3 className="font-semibold mb-2">
+                    {t("library.telegram")}
+                  </h3>
+                  <a
+                    href={library.social_media.telegram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-2"
+                  >
+                    {library.social_media.telegram}
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="md:col-span-1">
+          <Card className="h-full">
+            <CardContent className="p-4">
+              <img
+                src={library.image || DEFAULT_LIBRARY_IMAGE}
+                alt={library.name}
+                className="w-full h-[370px] object-cover rounded-lg"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = DEFAULT_LIBRARY_IMAGE;
+                }}
+              />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {library.books?.length > 0 ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("library.books")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="relative">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {currentBooks.map((book) => (
+                  <Card key={book.id}>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold mb-2">{book.name}</h3>
+                      <div className="space-y-2 text-sm">
+                        <p>
+                          <span className="font-medium">
+                            {t("book.author")}:
+                          </span>{" "}
+                          {book.author}
+                        </p>
+                        <p>
+                          <span className="font-medium">
+                            {t("book.publisher")}:
+                          </span>{" "}
+                          {book.publisher}
+                        </p>
+                        <p>
+                          <span className="font-medium">
+                            {t("book.quantity")}:
+                          </span>{" "}
+                          {book.quantity_in_library}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
+              </div>
 
-                <PaginationItem>
-                  <PaginationNext
-                    onClick={() =>
-                      setCurrentPage((p) =>
-                        Math.min(booksData.totalPages, p + 1)
-                      )
-                    }
-                    className={
-                      currentPage === booksData.totalPages
-                        ? "pointer-events-none opacity-50"
-                        : ""
-                    }
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </PaginationRoot>
-          </div>
-        </CardContent>
-      </Card>
-
-      <LocationMap
-        isOpen={isMapOpen}
-        onClose={() => setIsMapOpen(false)}
-        onLocationSelect={handleLocationSelect}
-        defaultLocation={
-          library?.latitude && library?.longitude
-            ? { lat: library.latitude, lng: library.longitude }
-            : undefined
-        }
-      />
+              {totalSlides > 1 && (
+                <div className="flex justify-center mt-4 space-x-4">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={handlePrevSlide}
+                    disabled={currentSlide === 0}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <div className="flex items-center space-x-2">
+                    {[...Array(totalSlides)].map((_, index) => (
+                      <button
+                        key={index}
+                        className={`w-2 h-2 rounded-full ${
+                          currentSlide === index ? "bg-primary" : "bg-gray-300"
+                        }`}
+                        onClick={() => setCurrentSlide(index)}
+                      />
+                    ))}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={handleNextSlide}
+                    disabled={currentSlide === totalSlides - 1}
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <Card>
+          <CardContent className="p-8 text-center text-muted-foreground">
+            {t("library.noBooks")}
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

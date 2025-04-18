@@ -10,7 +10,9 @@
     "close": "Yopish",
     "search": "Qidirish",
     "noResults": "Natija topilmadi",
-    "error": "Xatolik"
+    "error": "Xatolik",
+    "success": "Muvaffaqiyatli",
+    "back": "Ortga"
   },
   "home": {
     "title": "Creative Bookworm - Zamonaviy kutubxona tizimi",
@@ -99,21 +101,31 @@
     "logout": "Chiqish"
   },
   "library": {
-    "viewOnMap": "Xaritada ko'rish",
-    "description": "Tavsif",
-    "contact": "Bog'lanish",
+    "title": "Kutubxona",
+    "details": "Kutubxona haqida ma'lumot",
+    "name": "Kutubxona nomi",
+    "address": "Manzil",
+    "phone": "Telefon raqam",
+    "status": "Holati",
+    "active": "Faol",
+    "inactive": "Faol emas",
+    "telegram": "Telegram",
     "books": "Kitoblar",
-    "details": "Kutubxona tafsilotlari"
+    "noBooks": "Bu kutubxonada kitoblar to'plami mavjud emas",
+    "viewOnMap": "Xaritada ko'rish",
+    "canRentBooks": "Kitob ijarasi mavjud",
+    "cantRentBooks": "Kitob ijarasi mavjud emas",
+    "fetchError": "Kutubxona ma'lumotlarini yuklashda xatolik yuz berdi",
+    "notFound": "Kutubxona ma'lumotlari topilmadi"
   },
   "book": {
-    "catalog": "Kitoblar katalogi",
-    "totalBooks": "Jami {{count}} ta kitob",
-    "name": "Nomi",
+    "title": "Kitob",
+    "name": "Kitob nomi",
     "author": "Muallif",
     "publisher": "Nashriyot",
     "quantity": "Soni",
-    "library": "Kutubxona",
-    "fetchError": "Kitoblarni yuklashda xatolik yuz berdi"
+    "available": "Mavjud",
+    "notAvailable": "Mavjud emas"
   },
   "map": {
     "title": "Manzilni tanlang",

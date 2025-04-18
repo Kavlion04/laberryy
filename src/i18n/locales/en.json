@@ -7,6 +7,28 @@
     "logout": "Logout",
     "settings": "Settings"
   },
+  "library": {
+    "totalBooks":"Total Books",
+    "title": "Library",
+    "details": "Library Information",
+    "name": "Library Name",
+    "address": "Address",
+    "phone": "Phone",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "telegram": "Telegram",
+    "books": "Books",
+    "noBooks": "This library has no books available",
+    "viewOnMap": "View on Map",
+    "canRentBooks": "Book rental available",
+    "cantRentBooks": "Book rental not available",
+    "fetchError": "Error loading library data",
+    "notFound": "Library information not found",
+    "description" : "All libraries",
+    "libraries": "Libraries"
+  },
+
   "sidebar": {
     "dashboard": "Dashboard",
     "bookCatalog": "Book Catalog",
@@ -19,6 +41,15 @@
     "version": "Version 1.0.0",
     "about": "About Us",
     "libraries": "Libraries"
+  },
+  "book": {
+    "title": "Book",
+    "name": "Book Name",
+    "author": "Author",
+    "publisher": "Publisher",
+    "quantity": "Quantity",
+    "available": "Available",
+    "notAvailable": "Not Available"
   },
   "dashboard": {
     "welcome": "Welcome back to BookMaster",
