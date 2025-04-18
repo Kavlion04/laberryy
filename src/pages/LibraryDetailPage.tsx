@@ -1,3 +1,4 @@
+// Kod boshida o'zgartirishlar yo'q
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -41,15 +42,6 @@ interface Library {
   books: Book[];
 }
 
-interface LibraryResponse {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: {
-    library: Library;
-  };
-}
-
 const api = axios.create({
   baseURL: "https://s-libraries.uz/api/v1",
   timeout: 5000,
@@ -70,14 +62,14 @@ const LibraryDetailPage = () => {
   const [library, setLibrary] = useState<Library | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // ✅ KITOBLARNI FETCH QILISH QISMI
   const fetchLibraryDetails = async () => {
     try {
-      const response = await api.get<LibraryResponse>(
-        `/libraries/library/${id}/`
-      );
+      const response = await api.get<Library>(`/libraries/library/${id}/`);
 
-      if (response.data?.results?.library) {
-        setLibrary(response.data.results.library);
+      console.log("Library data:", response.data); // 👈 Test uchun
+      if (response.data) {
+        setLibrary(response.data);
       } else {
         toast({
           title: t("common.error"),
@@ -94,6 +86,8 @@ const LibraryDetailPage = () => {
       });
     }
   };
+  
+  
 
   useEffect(() => {
     fetchLibraryDetails();
@@ -140,6 +134,7 @@ const LibraryDetailPage = () => {
 
   return (
     <div className="container mx-auto p-4 space-y-6">
+      {/* BACK BUTTON */}
       <div className="flex items-center gap-4 mb-4">
         <Button
           variant="outline"
@@ -151,7 +146,7 @@ const LibraryDetailPage = () => {
           {t("common.back")}
         </Button>
       </div>
-
+      {/* LIBRARY INFO */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
           <Card>
@@ -229,6 +224,7 @@ const LibraryDetailPage = () => {
           </Card>
         </div>
 
+        {/* IMAGE */}
         <div className="md:col-span-1">
           <Card className="h-full">
             <CardContent className="p-4">
@@ -245,7 +241,6 @@ const LibraryDetailPage = () => {
           </Card>
         </div>
       </div>
-
       {library.books?.length > 0 ? (
         <Card>
           <CardHeader>
@@ -324,6 +319,9 @@ const LibraryDetailPage = () => {
           </CardContent>
         </Card>
       )}
+      
+      
+      
     </div>
   );
 };
